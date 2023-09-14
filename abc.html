@@ -1,0 +1,98 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+  <title>Text-to-Speech Example</title>
+</head>
+<body>
+  <h1>Text-to-Speech Example</h1>
+  
+  <textarea id="textToSpeak" rows="4" cols="50">Hello, this is a text-to-speech example.</textarea>
+  <button id="speakButton">Speak</button>
+
+  <script>
+    // Get references to HTML elements
+    const textToSpeakInput = document.getElementById('textToSpeak');
+    const speakButton = document.getElementById('speakButton');
+
+    // Initialize the speech synthesis API
+    const synth = window.speechSynthesis;
+
+    // Create a function to handle the TTS
+    function speakText() {
+      const text = textToSpeakInput.value;
+      const utterance = new SpeechSynthesisUtterance(text);
+
+      // Set optional parameters (voice, rate, pitch, etc.) if needed
+      // utterance.voice = synth.getVoices()[0]; // Specify a voice
+      // utterance.rate = 1.0; // Speech rate
+      // utterance.pitch = 1.0; // Speech pitch
+
+      // Speak the text
+      synth.speak(utterance);
+    }
+
+    // Attach an event listener to the button
+    speakButton.addEventListener('click', speakText);
+  </script>
+</body>
+</html> -->
+
+
+<!-- speech to text  -->
+
+    
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Speech-to-Text Example</title>
+</head>
+<body>
+  <h1>Speech-to-Text Example</h1>
+
+  <div>
+    <p>Click the "Start Listening" button and speak.</p>
+    <button id="startButton">Start Listening</button>
+  </div>
+  
+  <div id="transcript"></div>
+
+  <script>
+    // Get references to HTML elements
+    const startButton = document.getElementById('startButton');
+    const transcriptDiv = document.getElementById('transcript');
+
+    // Initialize the SpeechRecognition API
+    const recognition = new window.webkitSpeechRecognition || window.SpeechRecognition();
+    
+    recognition.continuous = true; // Enable continuous recognition
+    
+    // Event handler when speech recognition starts
+    recognition.onstart = () => {
+      console.log('Speech recognition started');
+    };
+
+    // Event handler when speech recognition results are available
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      transcriptDiv.textContent = transcript;
+    };
+
+    // Event handler when the speech recognition ends
+    recognition.onend = () => {
+      console.log('Speech recognition ended');
+    };
+
+    // Event handler for errors
+    recognition.onerror = (event) => {
+      console.error('Speech recognition error:', event.error);
+    };
+
+    // Event listener for the start button
+    startButton.addEventListener('click', () => {
+      // Start speech recognition when the button is clicked
+      recognition.start();
+    });
+  </script>
+</body>
+</html>
+

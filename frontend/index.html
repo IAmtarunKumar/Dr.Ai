@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+      }
+
+      .chat-container {
+        max-width: 400px;
+        height: 550px;
+        margin: 0 auto;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        overflow: hidden;
+      }
+
+      .chat-header {
+        background-color: #007bff;
+        color: #fff;
+        padding: 15px;
+        text-align: center;
+        font-size: 24px;
+      }
+
+      .chat-messages {
+        padding: 15px;
+        max-height: 400px;
+        overflow-y: auto;
+      }
+
+      .message {
+        background-color: #f0f0f0;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+
+        overflow: hidden;
+        white-space: wrap;
+        text-overflow: ellipsis;
+      }
+
+      .chat-input {
+        /* margin-top: 390px; */
+        display: flex;
+        padding: 15px;
+        position: fixed;
+        top: 550px;
+      }
+
+      #message-input {
+        flex: 1;
+        
+        width: 270px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+      }
+
+      #send-button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 15px;
+        margin-left: 15px;
+        cursor: pointer;
+      }
+
+      #send-button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <br /><br /><br /><br />
+    <div class="chat-container">
+      <div class="chat-header">Doctor Chat</div>
+      <div class="chat-messages" id="chat-messages">
+        <!-- Chat messages will be displayed here -->
+      </div>
+      <div class="chat-input">
+        <input
+          type="text"
+          id="message-input"
+          placeholder="Type your message..."
+        />
+        <button id="send-button">Send</button>
+      </div>
+    </div>
+    <script>
+
+    //   document.addEventListener("DOMContentLoaded", function () {
+    
+        const chatMessages = document.getElementById("chat-messages");
+        const messageInput = document.getElementById("message-input");
+        const sendButton = document.getElementById("send-button");
+
+        sendButton.addEventListener("click", function () {
+
+
+
+            let text = document.querySelector("#message-input").value;
+        let obj = {
+          text: text,
+        };
+
+        const message = text.trim();
+          if (message !== "") {
+
+            const messageElement = document.createElement("div");
+            // messageElement.style.display = "inline-block";
+            messageElement.className = "message";
+            messageElement.textContent = message;
+            chatMessages.appendChild(messageElement);
+            messageInput.value = "";
+          }
+
+        console.log(obj);
+
+        async function doctor(obj) {
+          let res = await fetch("http://localhost:3000/chat/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(obj),
+          });
+          
+
+          if (res.ok) {
+            let data = await res.json();
+            // console.log(data);
+           
+            append(data)
+          }
+        }
+        doctor(obj)
+
+
+
+
+        let append = (data)=>{
+
+        let newData = data.msg
+        console.log(newData)
+    
+  
+      
+     
+        
+
+         
+            
+     
+            // const message = messageInput.value.trim();
+            if(data !== ""){
+                console.log("aa")
+                console.log(data.msg)
+                const messageElement = document.createElement("div");
+                const p1 = document.createElement("p");
+                const p2 = document.createElement("p");
+                const p3 = document.createElement("p");
+                const p4 = document.createElement("p");
+
+                const [advice , medicines , dose , other] = data.msg
+
+                if(advice ){
+                    p1.innerHTML=advice
+                    p1.style.cssText = '::first-word { font-weight: bold; }';
+                } 
+                if(medicines){
+                    p2.innerHTML=medicines
+                    p2.style.cssText = '::first-word { font-weight: bold; }';
+
+                }
+                if(dose){
+                    p3.innerHTML=dose
+                    p3.style.cssText = '::first-word { font-weight: bold; }';
+
+                }
+
+                if(other){
+                    p4.innerHTML=other
+                    p4.style.cssText = '::first-word { font-weight: bold; }';
+
+                }
+                
+                
+
+                messageElement.append(p1,p2,p3,p4)
+
+
+
+
+
+
+                // messageElement.style.display = "inline-block";
+                messageElement.style.width = "auto"
+                messageElement.style.height="auto"
+            messageElement.className = "message";
+
+            // messageElement.innerHTML = JSON.stringify(messageElement);
+            chatMessages.appendChild(messageElement);
+            messageInput.value = "";
+
+}
+
+        
+
+
+
+
+
+
+         
+
+         
+            // You can add code here to send the message to the server or process it further.
+          }
+        });
+    //   });
+    </script>
+  </body>
+</html>
