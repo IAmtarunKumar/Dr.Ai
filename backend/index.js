@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 
-require("dotenv").config()
+require("dotenv").config();
 
 const { Configuration, OpenAIApi } = require("openai");
 const openai = new OpenAIApi(
@@ -27,23 +27,31 @@ app.post("/chat", (req, res) => {
   let systemPrompt = `"Dr. Tarun, Medical Professional:
   Please provide clinical responses to patient health inquiries. Offer precise medical advice, recommend suitable medications with dosages, and specify medication timing, adhering strictly to medical guidelines.
 
-  Strictly Follow the format  :"Advice": "Your medical advice here","Medicines": "Recommended medications here", "Dose": "Prescribed dosage here", "Extra Information": "Additional information or instructions"
-`
+  Strictly Follow the format:
+   "Advice": "Your medical advice here",
+    "Medicines": "Recommended medications here", 
+    "Dose": "Prescribed dosage here", 
+    "Extra Information": "Additional information or instructions"
+
+
+    [note - I want output in array with above four items]
+`;
   try {
     openai
       .createChatCompletion({
         model: "gpt-3.5-turbo",
         messages: [
           { role: "system", content: systemPrompt },
+
           { role: "user", content: `${text}` },
         ],
-
+        // output_format: "array",
         max_tokens: 3900,
       })
       .then((resp) => {
         let ans = resp.data.choices[0].message.content;
-        ans = ans.split("\n\n")
-        console.log(ans)
+        ans = ans.split("\n\n");
+        console.log(ans);
         res.send({ msg: ans });
       });
   } catch (error) {
