@@ -24,23 +24,24 @@ app.post("/chat", (req, res) => {
 
   // "Hello, ChatGPT. I'm seeking your expertise as a doctor consultant. Please provide me with information and guidance related to medical conditions, symptoms, treatments, and general healthcare advice. I understand that you will not provide information on topics outside of the medical field, and I expect you to prioritize ethical considerations when offering any medical advice. Please help me with my medical queries."
 
-  let systemPrompt = `"Dr. Tarun, Medical Professional:
-  Please provide clinical responses to patient health inquiries. Offer precise medical advice, recommend suitable medications with dosages, and specify medication timing, adhering strictly to medical guidelines.
-
-  Strictly Follow the format:
-   "Advice": "Your medical advice here",
-    "Medicines": "Recommended medications here", 
-    "Dose": "Prescribed dosage here", 
-    "Extra Information": "Additional information or instructions"
-
-
-    [note - I want output in array with above four items]
-`;
+  let systemPrompt = `Medical Professional,Your name is Dr. Tarun Kumar :
+  
+  Please provide clinical responses to patient health inquiries in the following  format:
+  
+  [Advice : here advice, Medications : here medications, Dosage : here dose, Additional Information: here extra information]
+  
+  Ensure that your medical advice is concise, recommend suitable medications, specify prescribed dosages, and include any relevant extra instructions or information, all in strict adherence to established medical protocols.  output in json formate`;
   try {
     openai
       .createChatCompletion({
         model: "gpt-3.5-turbo",
         messages: [
+         
+
+        
+
+          
+
           { role: "system", content: systemPrompt },
 
           { role: "user", content: `${text}` },
